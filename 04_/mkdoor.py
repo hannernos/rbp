@@ -1,25 +1,25 @@
 from gpiozero import LED,Button, AngularServo
 from time import sleep
+from signal import pause
 
-R = LED(27)
 G = LED(17)
+R = LED(27)
 btn1 = Button(14)
 btn2 = Button(15)
 servo = AngularServo(13,min_angle = 0, max_angle = 90)
 
-pwd=[1,1,1,1]
+pwd=[1,1,1,1,1]
 ml=[]
-a=0
-
+a=-1
 def suc():
     G.on()
     servo.angle=90
-    sleep(0.5)
+    sleep(1)
     servo.angle = 0
-    sleep(0.5)
+    sleep(1)
 
     G.off()
-    print("succecc!")
+    print("success!")
 
 def fail():
     R.on()
@@ -39,20 +39,37 @@ def openit():
     else:
         suc()
 
-def btn0(b):
+
+def btn_1():
     global a, ml
-    a+=1
-    if a==4:
+    a += 1
+
+    print(a+1,": 1 in")
+
+    if a==3:
         openit()
-        a=1
-        ml=[b]
+
+        a=-1
+        ml=[]
     else:
-        ml.append(b)
+        ml.append(1)
+
+def btn_0():
+
+    global a, ml
+    a += 1
+    print(a+1, ": 0 in")
+
+    if a==3:
+        openit()
+
+        a=-1
+        ml=[]
+    else:
+        ml.append(0)
 
 
-btn1.when_pressed = btn0(1)
-btn2.when_pressed = btn0(2)
+btn1.when_pressed = btn_1
+btn2.when_pressed = btn_0
 
-while True:
-
-    sleep(1)
+pause()
